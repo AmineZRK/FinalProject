@@ -1,0 +1,63 @@
+{
+  "wasteReports": [
+    {
+      "id": 1,
+      "user": "JohnDoe",
+      "location": {
+        "latitude": 48.8566,
+        "longitude": 2.3522
+      },
+      "timestamp": "2023-11-09T12:30:00",
+      "wasteType": "Plastic",
+      "weightEstimation": "5 kg",
+      "photoUrl": "https://example.com/photo1.jpg",
+      "status": "Pending"
+    },
+    {
+      "id": 2,
+      "user": "JaneSmith",
+      "location": {
+        "latitude": 48.8599,
+        "longitude": 2.275
+      },
+      "timestamp": "2023-11-10T14:15:00",
+      "wasteType": "Glass",
+      "weightEstimation": "3 kg",
+      "photoUrl": "https://example.com/photo2.jpg",
+      "status": "In Progress"
+    },
+    {
+      "id": 3,
+      "user": "BobJohnson",
+      "location": {
+        "latitude": 48.8647,
+        "longitude": 2.349
+      },
+      "timestamp": "2023-11-11T09:45:00",
+      "wasteType": "Organic",
+      "weightEstimation": "2 kg",
+      "photoUrl": "https://example.com/photo3.jpg",
+      "status": "Completed"
+    },
+    {
+      "user": "JohnDoe",
+      "location": {
+        "latitude": 48.8566,
+        "longitude": 2.3522
+      },
+      "wasteType": "Plastic",
+      "weightEstimation": "10 kg",
+      "photoUrl": "https://example.com/photo1.jpg",
+      "id": 4
+    },
+    {
+      "user": "JohnDoe",
+      "latitude": 48.8566,
+      "longitude": 2.3522,
+      "wasteType": "Plastic",
+      "weightEstimation": "10 kg",
+      "photoUrl": "https://example.com/photo1.jpg",
+      "id": 5
+    }
+  ]
+}
