@@ -4,6 +4,7 @@ package com.example.finalproject.Api;
 import com.example.finalproject.models.Waste;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -19,7 +20,12 @@ public interface ApiService {
     @Multipart
     @POST("/api/upload")
     Call<ResponseBody> upload(
-            @Part MultipartBody.Part photo
+            @Part MultipartBody.Part photo,
+            @Part("latitude") RequestBody latitude,
+            @Part("longitude") RequestBody longitude,
+            @Part("wasteType") RequestBody wasteType,
+            @Part("weightEstimation") RequestBody weightEstimation,
+            @Part("user") RequestBody User
     );
 
 }

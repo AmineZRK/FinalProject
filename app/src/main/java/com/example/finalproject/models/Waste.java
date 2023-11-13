@@ -10,8 +10,7 @@ public class Waste {
     private String user;
     private String wasteType;
     private String weightEstimation;
-    private String photoUrl;
-    List<MultipartBody.Part> photos;
+
 
     public double getLatitude() {
         return latitude;
@@ -53,19 +52,4 @@ public class Waste {
         this.weightEstimation = weightEstimation;
     }
 
-    public String getPhotoUrl() {
-        return photoUrl;
-    }
-
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
-    }
-
-    public List<MultipartBody.Part> getPhotos() {
-        return photos;
-    }
-
-    public void setPhotos(List<MultipartBody.Part>  photos) {
-        this.photos = photos;
-    }
 }

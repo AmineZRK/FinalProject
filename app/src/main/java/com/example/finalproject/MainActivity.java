@@ -187,166 +187,23 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-    private class UploadImageTask extends AsyncTask<Bitmap, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Bitmap... params) {
-            // Move your network code here
-            String serverUrl = "http://10.0.2.2:3000/api/";
-
-            try {
-                // Create OkHttpClient with the interceptor
-                HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-                loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-                OkHttpClient client = new OkHttpClient.Builder()
-                        .addInterceptor(loggingInterceptor)
-                        // Add other interceptors if needed
-                        .build();
-
-                // Build Retrofit instance with the OkHttpClient
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(serverUrl)
-                        .client(client)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-
-                // Create a service interface for your API
-                ApiService apiService = retrofit.create(ApiService.class);
-
-                // Convert Bitmap to a file
-                File file = convertBitmapToFile(params[0]);
-                System.out.println(file);
-                // Determine the media type of the image
-                String mediaType = getMediaType(file);
-                // Create a request body with the file
-                RequestBody requestFile = RequestBody.create(MediaType.parse(mediaType), file);
-
-                // Create a MultipartBody.Part from the file
-                MultipartBody.Part photoPart = MultipartBody.Part.createFormData("photo", file.getName(), requestFile);
-
-                // Call the API service method to upload the image
-                Call<ResponseBody> call = apiService.upload(photoPart);
-                Response<ResponseBody> response = call.execute();
-
-                // Check the response
-                if (response.isSuccessful()) {
-                    System.out.println("okkkk");
-                } else {
-                    System.out.println("not   okkkk");
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-        private String getMediaType(File file) {
-            // Determine the media type based on the file extension or content
-            String fileName = file.getName();
-            String extension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
-
-            switch (extension) {
-                case "jpg":
-                case "jpeg":
-                    return "image/jpeg";
-                case "png":
-                    return "image/png";
-                // Add more cases if needed for other image formats
-                default:
-                    return "application/octet-stream"; // fallback to generic binary data
-            }
-        }
-        @Override
-        protected void onPostExecute(Void result) {
-            // Handle the result if needed
-        }
-
-        public void executeTask(Bitmap... bitmaps) {
-            // Execute the task using executeOnExecutor
-            // THREAD_POOL_EXECUTOR allows parallel execution
-            executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, bitmaps);
-        }
-    }
-
-
-    private File convertBitmapToFile(Bitmap bitmap) throws IOException {
-        File filesDir = getCacheDir();
-        File file = new File(filesDir, "photo.jpeg");
-        file.createNewFile();
-
-        // Convert bitmap to byte array
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
-        byte[] bitmapData = bos.toByteArray();
-
-        // Write the bytes in file
-        FileOutputStream fos = new FileOutputStream(file);
-        fos.write(bitmapData);
-        fos.flush();
-        fos.close();
-
-        return file;
-    }
-    /*private void submitWasteReport() {
-        String wasteType = etWasteType.getText().toString();
-        String weightEstimation = etWeightEstimation.getText().toString();
-        String photoUrl = etPhotoUrl.getText().toString();
-
-        Waste request = new Waste();
-        request.setWasteType(wasteType);
-        request.setWeightEstimation(weightEstimation);
-        request.setPhotoUrl(photoUrl);
-        request.setUser("Amine");
-        // Include location data in the request
-        request.setLatitude(latitude);
-        request.setLongitude(longitude);
-
-        // Check if the photoBitmap is not null
-        if (photoBitmap != null) {
-            // Convert Bitmap to File
-            File photoFile = convertBitmapToFile(photoBitmap);
-
-            // Create a request body with the file
-            RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), photoFile);
-
-            // Create a multipart part from the file
-            MultipartBody.Part photoPart = MultipartBody.Part.createFormData("photo", photoFile.getName(), requestFile);
-            // Create a list to hold the photo parts
-            List<MultipartBody.Part> photosList = new ArrayList<>();
-            photosList.add(photoPart);
-
-            // Set the list of photo parts in the request
-            request.setPhotos(photosList);
-        }
-
-        Call<ResponseBody> call = wasteReportService.createWaste(request);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                Log.d("SubmitWasteReport", "Response code: " + response.code());
-                if (response.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, "Waste report submitted successfully", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(MainActivity.this, "Failed to submit waste report: " + response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                Log.e("SubmitWasteReport", "Error: " + t.getMessage(), t);
-                Toast.makeText(MainActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }*/
 
 
 
     private void submitWasteReport() {
         // Check if the photoBitmap is not null
         if (photoBitmap != null) {
-            new UploadImageTask().executeTask(photoBitmap);
+            // Get other information from the UI
+            String wasteType = etWasteType.getText().toString();
+            String weightEstimation = etWeightEstimation.getText().toString();
+
+            // Create a Waste object with the information
+            Waste waste = new Waste();
+            waste.setLatitude(latitude);
+            waste.setLongitude(longitude);
+            waste.setWasteType(wasteType);
+            waste.setWeightEstimation(weightEstimation);
+            new UploadImageTask(this).executeTask(photoBitmap,  waste);
 
     }
     }
