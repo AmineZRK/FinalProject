@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -55,7 +56,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText etWasteType, etWeightEstimation, etPhotoUrl;
+    private EditText etWeightEstimation;
+    private Spinner spinnerWasteType;
     private Button btnGetCurrentLocation, btnTakePhoto, btnSubmit;
     private ImageView imageView;
     private Bitmap photoBitmap;
@@ -73,9 +75,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        etWasteType = findViewById(R.id.etWasteType);
+        spinnerWasteType = findViewById(R.id.spinnerWasteType);
         etWeightEstimation = findViewById(R.id.etWeightEstimation);
-        etPhotoUrl = findViewById(R.id.etPhotoUrl);
         btnGetCurrentLocation = findViewById(R.id.btnGetCurrentLocation);
         btnTakePhoto = findViewById(R.id.btnTakePhoto);
         btnSubmit = findViewById(R.id.btnSubmit);
@@ -194,14 +195,14 @@ public class MainActivity extends AppCompatActivity {
         // Check if the photoBitmap is not null
         if (photoBitmap != null) {
             // Get other information from the UI
-            String wasteType = etWasteType.getText().toString();
+            String selectedWasteType = spinnerWasteType.getSelectedItem().toString();
             String weightEstimation = etWeightEstimation.getText().toString();
 
             // Create a Waste object with the information
             Waste waste = new Waste();
             waste.setLatitude(latitude);
             waste.setLongitude(longitude);
-            waste.setWasteType(wasteType);
+            waste.setWasteType(selectedWasteType);
             waste.setWeightEstimation(weightEstimation);
             new UploadImageTask(this).executeTask(photoBitmap,  waste);
 
