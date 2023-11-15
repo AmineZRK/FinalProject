@@ -39,7 +39,7 @@ public class UploadImageTask extends AsyncTask<Object, Void, Void> {
     @Override
     protected Void doInBackground(Object... params) {
         // Move your network code here
-        String serverUrl = "http://10.0.2.2:3000/api/";
+        String serverUrl = "https://6f0c-178-16-174-77.ngrok-free.app/api/";
 
         try {
             // Create OkHttpClient with the interceptor

@@ -20,7 +20,7 @@ mongoose.connect(URI)
     console.error('MongoDB connection error:', err);
   }); 
 // Middleware
-app.use(express.json());
+app.use(express.json()); 
 app.use(cors());
 app.use('/uploads', express.static('uploads')); // Serve uploaded files statically
 app.use('/waste', express.static('uploads'))

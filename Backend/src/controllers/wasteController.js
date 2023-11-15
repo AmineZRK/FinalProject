@@ -67,4 +67,26 @@ module.exports = class wasteController {
     }
  
   }
+
+  static alldata = async (req, res) => {
+    try{
+      const allData = await Waste.find();
+      
+
+      //return console.log(singleUserInfo);
+      return res.status(200).json({
+        code: 200,
+        message: "User Information",
+        data: allData,
+      });
+    }
+    catch(error){
+      res.status(501).json({
+        code: 501,
+        message: error.message,
+        error: true,
+      });
+    }
+  }
+
 };
